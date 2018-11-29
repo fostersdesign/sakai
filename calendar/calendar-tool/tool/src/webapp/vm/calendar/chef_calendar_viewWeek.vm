@@ -4,6 +4,21 @@
 	#if($menu)#toolbar($menu)#end
 	#if ($alertMessage)<div class="alertMessage">$tlang.getString('gen.alert') $validator.escapeHtml($alertMessage)</div>#end
 
+#set ($i=0)
+#set ($todayIsVisible = false)
+#set($todayIndex = -1)
+#foreach ($dayName in $dayOfWeekNames)
+    ## --- get the local date of today
+    #set ($today = $realDate.breakdownLocal())
+    
+    ## --- if the current date is today's date:
+    #if ($today.Day == $week.getWeek($i).Day && $today.Month == $week.getWeek($i).Month && $today.Year == $week.getWeek($i).Year)
+		#set ($todayIsVisible = true)
+        #set ($todayIndex = $i)
+    #end
+
+    #set ($i=$i+1)
+#end
 	<div class="page-header">
 		<h3>$tlang.getString("view.calweek")</h3>
 		<div class="sakai-sideHeading">
@@ -30,10 +45,10 @@
 			</form>
 		</div>
 		<div class="sakai-table-pagerContainer">
-			<div class="currentCalendar">$beginWeek - $endWeek $timezone</div>
+			<div class="sakai-table-pagerLabel">$beginWeek - $endWeek $timezone</div>
 			<form name="weekform" action="#toolForm("$action")" method="post" class="inlineForm">
 				<input type="submit" name="eventSubmit_doPrev" value="$tlang.getString('vieww.laswk')" title="$tlang.getString('vieww.gotop')" />
-				<input type="submit" name="eventSubmit_doToday" value="$tlang.getString('view.today')" title ="$tlang.getString('view.gotoday')"/>
+				<input type="submit" name="eventSubmit_doToday" value="$tlang.getString('view.today')" title ="$tlang.getString('view.gotoday')" #if ($todayIsVisible) disabled="disabled" #end />
 				<input type="submit" name="eventSubmit_doNext" value="$tlang.getString('vieww.nexwk')" title="$tlang.getString('vieww.goton')" />
 				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 			</form>
@@ -441,8 +456,7 @@
 #end
 
 <!-- how to draw a week-->
-#set($todayIndex = -1)
-<table cellpadding="2" width="100%"  cellspacing="0" class="calendar" summary="$tlang.getString("vieww.summary")" style="height:370px">
+<table class="calendar calendar-week" summary="$tlang.getString("vieww.summary")">
 <tr>
 <th align="left" height="20" width="7%">
     <div class="viewLinkControl">
@@ -453,29 +467,10 @@
 </th>
 #set ($i=0)
 #foreach ($dayName in $dayOfWeekNames)
-    ## --- suppose the current date in schedule is not today, then all set as 0
-    #set ($dayEqual = 0)
-    #set ($monthEqual = 0)
-    #set ($yearEqual = 0)
-
-    ## --- get the local date of today
-    #set ($today = $realDate.breakdownLocal())
-    #if ($today.Day == $week.getWeek($i).Day)
-        #set ($dayEqual = 1)
-    #end
-    #if ($today.Month == $week.getWeek($i).Month)
-        #set ($monthEqual = 1)
-    #end
-    #if ($today.Year == $week.getWeek($i).Year)
-        #set ($yearEqual = 1)
-    #end
-
     ## --- if the current date is today's date, 
-    ## --- then bold the date to indicate
-    #set ($dayMonthYear = $dayEqual + $monthEqual + $yearEqual)
-    #if ($dayMonthYear == 3)
+    ## --- then indicate the date
+    #if ($todayIndex == $i)
         #set ($border = "borderTodayTop" )
-        #set ($todayIndex = $i)
     #else
         #set ($border = "borderWhite")
     #end
@@ -595,7 +590,8 @@
                                 #set ($heightPct = 5 * $rowspan)
                                 #set ($divHeight = $standardRowHeight * $rowspan)
                                 <td height="$heightPct%" rowspan="$rowspan" colspan="$colspan" align="center" class="borderGrayBackground match3">
-                                <div style="position: relative; overflow: hidden; height: ${divHeight}px; border-style: solid; border-width: 0; background-color: transparent">
+                                ##<div style="position: relative; overflow: hidden; height: ${divHeight}px; border-style: solid; border-width: 0; background-color: transparent">
+                                <div class="calendarWeekView-event">
                             #end
                             #set ($tempCol = $hm.get($n) + $colspan)
                             #if ($hm.put($n, $tempCol)) #end
@@ -754,7 +750,8 @@
                                 #set ($divHeight = ($numberOfSections - 1) * $rowspan)
                                 <td height="$heightPct%" rowspan="$rowspan" colspan="$colspan" align="center" class="borderGrayBackground match4">
                                 ##<td height="$heightPct%" rowspan="$rowspan" colspan="1" align="center" class="borderGrayBackground match5">
-                                <div style="position: relative; overflow: hidden; height: ${divHeight}px; border-style: solid; border-width: 0; background-color: transparent">
+                                ##<div style="position: relative; overflow: hidden; height: ${divHeight}px; border-style: solid; border-width: 0; background-color: transparent">
+                                <div class="calendarWeekView-event">
                             #end
                         #end
                         #if ($hm.put($n, $tempCol)) #end

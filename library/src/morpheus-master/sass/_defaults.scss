@@ -28,6 +28,7 @@ $font-family-url: "https://fonts.googleapis.com/css?family=Open+Sans:400,500,700
 $font-family: "Open Sans",sans-serif;
 $default-font-size: 14px !default;
 $default-font-weight: 400 !default;										// 400 or 700 as you wish
+$default-line-height: 1.42857;											// 20px / 14px = 1.42857
 $header-font-family: $font-family;
 $header-font-weight: 700 !default;										// 400 or 700 as you wish
 

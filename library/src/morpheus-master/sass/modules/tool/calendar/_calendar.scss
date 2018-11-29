@@ -51,6 +51,7 @@
 	
 	table.calendar {
 		table-layout: fixed;
+		width: 100%;
 		border-collapse: collapse;
 		font-size: $default-font-size;
 		background-color: $calendar-table-background-color;
@@ -378,11 +379,6 @@
 		}
 	}
 
-	.listNav .currentCalendar {
-		font-size: $default-font-size;
-		text-align: center;
-	}
-	
 	.calendarMonthView-date {
 		display: block;
 		margin: 0;
@@ -440,6 +436,31 @@
 		}
 	}
 	
+	.calendar-week td {
+		line-height: 2;
+	}
+	
+	.calendarWeekView-event {
+		overflow-x: hidden;
+		overflow-y: auto;
+		max-height: calc((2 * 28px) + (2 * 1px) - 1px);		// (cell line-height times number of rowspan) plus (number of rowspan times border width) minus one extra border
+		padding-right: $standard-space;
+		padding-left: 18px;
+		font-size: 12px;
+		line-height: 1.4;
+		text-align: left;
+		
+		a {
+			position: relative;
+		}
+		
+		.icon {
+			position: absolute;
+			top: 2px;
+			left: -16px;
+		}
+	}
+	
 	.squareCalendarDays {
 		position: absolute;
 		top: 0;
@@ -483,6 +504,7 @@
 // Icons used in more than one tool so not restricted by a specific namespace.
 .icon{
 	@extend .fa;
+	@extend .fa-fw;
 	&.icon-calendar-academic-calendar				{	@extend .fa-graduation-cap}
 	&.icon-calendar-activity						{	@extend .fa-rocket}
 	&.icon-calendar-cancellation					{	@extend .fa-calendar-times-o}

@@ -115,7 +115,7 @@
 #* 		Joanne: need a check here - if messages, display, otherwise do not.
 		Not sure what was available in the context to do this. (gsilver) *#
 
-			<table class="listHier lines nolines" cellspacing="0" cellpadding="0" border="0" summary="$tlang.getString('viewl.list.summary')">
+			<table class="calendar-list listHier lines nolines" summary="$tlang.getString('viewl.list.summary')">
 				<tr>
 					<th>
 						#if ($currentDateSortAsc)
