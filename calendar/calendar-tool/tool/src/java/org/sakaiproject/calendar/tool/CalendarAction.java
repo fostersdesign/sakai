@@ -3120,6 +3120,8 @@ extends VelocityPortletStateAction
 		int stateYear = b.getYear();
 		int stateMonth = b.getMonth();
 		int stateDay = b.getDay();
+		context.put("todayYear", Integer.valueOf(stateYear));
+
 		if ((sstate.getAttribute(STATE_YEAR) != null) && (sstate.getAttribute(STATE_MONTH) != null) && (sstate.getAttribute(STATE_DAY) != null))
 		{
 			stateYear = ((Integer)sstate.getAttribute(STATE_YEAR)).intValue();
@@ -3198,7 +3200,6 @@ extends VelocityPortletStateAction
 		context.put("selectedView", rb.getString("java.byyear"));
 		
 		context.put("dayOfWeekNames", calObj.getCalendarDaysOfWeekNames(false));
-		
 	} // buildYearContext
 	
 	
@@ -3227,6 +3228,9 @@ extends VelocityPortletStateAction
 		int stateYear = b.getYear();
 		int stateMonth = b.getMonth();
 		int stateDay = b.getDay();
+		context.put("todayYear", Integer.valueOf(stateYear));
+		context.put("todayMonth", Integer.valueOf(stateMonth));
+		
 		if ((sstate.getAttribute(STATE_YEAR) != null) && (sstate.getAttribute(STATE_MONTH) != null) && (sstate.getAttribute(STATE_DAY) != null))
 		{
 			stateYear = ((Integer)sstate.getAttribute(STATE_YEAR)).intValue();
@@ -3279,6 +3283,7 @@ extends VelocityPortletStateAction
 		
 		context.put("dayOfWeekNames", calObj.getCalendarDaysOfWeekNames(false));
 		
+		context.put("monthInt", Integer.valueOf(calObj.getMonthInteger()));
 	} // buildMonthContext
 	
 	
@@ -5296,7 +5301,7 @@ extends VelocityPortletStateAction
 	
 	
 	/**
-	 * Action doToday is requested when the user click on "Go to today" button
+	 * Action doToday is requested when the user click on "Go to today" button; goes today's date in the current view
 	 */
 	public void doToday(RunData data, Context context)
 	{
@@ -5313,12 +5318,6 @@ extends VelocityPortletStateAction
 		sstate.setAttribute(STATE_YEAR, Integer.valueOf(b.getYear()));
 		sstate.setAttribute(STATE_MONTH, Integer.valueOf(b.getMonth()));
 		sstate.setAttribute(STATE_DAY, Integer.valueOf(b.getDay()));
-		
-		state.setState("day");
-		
-		//for dropdown menu display purpose
-		sstate.setAttribute(STATE_SELECTED_VIEW, rb.getString("java.byday"));
-		
 	}	 // doToday
 	
 	

@@ -1,33 +1,34 @@
 <!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/calendar/chef_calendar_viewDay.vm,v 1.10 2005/06/14 20:11:56 suiyy.umich.edu Exp $ -->
-
 <div class="portletBody">
 #if($menu)#toolbar($menu)#end
-
 		#if ($alertMessage)<div class="alertMessage">$tlang.getString('gen.alert') $validator.escapeHtml($alertMessage)</div>#end
-		<div style="display:block;clear:both"></div>
-
-	<h3>$tlang.getString("view.calday")</h3>
-		<div class="alertPanel">
-			<div class="viewNav">
-				<form name="viewForm" class="inlineForm" method="post" action="#toolForm("CalendarAction")">
-					<input type="hidden" name="eventSubmit_doView" value="view" />
-					<label for="view">$tlang.getString("view.view")</label>
-					<span class="skip">$tlang.getString("view.listnavselect")</span>
-					<select name="view" id="view" size="1" tabindex="3" onchange="document.viewForm.submit();">
+	<div class="page-header">
+		<h3>$tlang.getString("view.calday")</h3>
+		<div class="sakai-sideHeading">
+			<a href="#">Printable Version</a>
+		</div>
+	</div>
+	<div class="sakai-table-toolBar">
+		<div class="sakai-table-filterContainer">
+			<!-- drop down menu for different views -->
+			<form name="viewForm" class="inlineForm" method="post" action="#toolForm("CalendarAction")">
+				<input type="hidden" name="eventSubmit_doView" value="view" />
+				<label for="view">$tlang.getString("view.view")</label>
+				<span class="skip">$tlang.getString("view.listnavselect")</span>
+				<select name="view" id="view" size="1" tabindex="3" onchange="document.viewForm.submit();">
 					#foreach ($view in ["$tlang.getString('java.byday')", "$tlang.getString('java.byweek')", "$tlang.getString('java.bymonth')", "$tlang.getString('java.byyear')", "$tlang.getString('java.listeve')"])
 						#if ($selectedView.equals($view))
-								<option value="$view" selected="selected" >$view</option>
-							#else
-								<option value="$view" >$view</option>
-							#end
+							<option value="$view" selected="selected" >$view</option>
+						#else
+							<option value="$view" >$view</option>
 						#end
-					</select>
-					<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
-				</form>
-			</div>
-			<div class="listNav">
-				<div class="instruction">	
-					$today $timezone</div>
+					#end
+				</select>
+				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+			</form>
+		</div>
+		<div class="sakai-table-pagerContainer">
+			<div class="currentCalendar">$today $timezone</div>
 				
 				#set($isToday = false)
 				#if ($date.Year == $todayYear)
@@ -43,19 +44,18 @@
 					<input type="submit" name="eventSubmit_doNext" value="$tlang.getString('view.nexday')" title="$tlang.getString('view.goto')" />
 					<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 				</form>
-			</div>
-		</div>	
-<div class="clear"></div>
-			#toolbar($menu_PDF)
+		</div>
+	</div>	
+
 		<div class="viewLinkControl">	
 			#if ($page== "first")
-				<a href="#" onclick="location='#toolLink("$action" "doPreday")';return false;" title="$tlang.getString('view.goearlier')">
+				<button onclick="location='#toolLink("$action" "doPreday")';return false;" title="$tlang.getString('view.goearlier')">
 				$tlang.getString("view.yesterday")
 			#else
-				<a href="#" onclick="location='#toolLink("$action" "doDpagep")';return false;" title="$tlang.getString('view.goearlier')">
+				<button onclick="location='#toolLink("$action" "doDpagep")';return false;" title="$tlang.getString('view.goearlier')">
 				$tlang.getString("view.before")
 			#end
-			</a>
+			</button>
 		</div>	
 
 <table width="100%" cellspacing="0" cellpadding="2" class="calendar" summary="$tlang.getString("view.summary")">
@@ -80,7 +80,7 @@
     #set($m = $date.getEventsBerDay($nx))
     #if ($m.size() > $colspan) #set ($colspan = $m.size()) #end
 #end
-#set ($v = 95 / $colspan )
+#set ($v = 80 / $colspan )
 
 #foreach($nx in [0..$numberOfSections])
     #set($m = $date.getEventsBerDay($nx))
@@ -93,7 +93,7 @@
         #set($temp2 = $timer % 24)
         #set($timer = $temp2 % 12)
 
-        <th width="5%" rowspan="2" align="right" bgcolor="#eeeeee" class="borderWhite" nowrap="nowrap" scope="row">
+        <th class="borderWhite timeCells" rowspan="2" scope="row">
         #foreach ($format in $timeFormat)
             #if ($format == "h")
                 #if ($timer == 0) #set($timer=12) #end
@@ -112,7 +112,7 @@
         #set($timer = $timer + 1)
         #if($m.isEmpty())
             #foreach($left in [1..$colspan])
-                <td  width="$v" class="borderGrayDayWeek">&nbsp;</td>
+                <td  width="$v%" class="borderGrayDayWeek">&nbsp;</td>
             #end
         #else
             #set($counter = 0)
@@ -209,24 +209,25 @@
 </table>
 <div class="viewLinkControl">
 	#if ($page== "first")
-		<a href="#toolLink("$action" "doDpagen")" title="$tlang.getString('view.golater')">
-		$tlang.getString('view.after')</a>
+		<button onclick="location='#toolLink("$action" "doDpagen")';return false;" title="$tlang.getString('view.golater')">
+		$tlang.getString('view.after')</button>
 	#else
 		#if($page== "second")
-			<a href="#toolLink("$action" "doDpagen")" title="$tlang.getString('view.golater')">
-			$tlang.getString('view.after')</a>
+			<button onclick="location='#toolLink("$action" "doDpagen")';return false;" title="$tlang.getString('view.golater')">
+			$tlang.getString('view.after')</button>
 		#else ## --third page
-			<a href="#" onclick="location='#toolLink("$action" "doNextday")';return false;" title="$tlang.getString('view.golater')">
-			$tlang.getString('view.tomorrow')</a>
+			<button onclick="location='#toolLink("$action" "doNextday")';return false;" title="$tlang.getString('view.golater')">
+			$tlang.getString('view.tomorrow')</button>
 		#end
 	#end
 </div>	
 
-<h4>$tlang.getString('view.legend')</h4>
-<ul class="calendarLegend">
-    #foreach ($key in $iconsAndLocalizedEventTypes.keySet())
-        <li><span class="icon $iconsAndLocalizedEventTypes.get($key)"></span> $key</li>
-    #end
-</ul>
-<div class="clear"></div>
+<div class="calendarEventTypesLegend">
+    <h4>$tlang.getString('view.legend')</h4>
+    <ul class="calendarLegend">
+        #foreach ($key in $iconsAndLocalizedEventTypes.keySet())
+            <li><span class="icon $iconsAndLocalizedEventTypes.get($key)"></span> $key</li>
+        #end
+    </ul>
+</div>
 </div>

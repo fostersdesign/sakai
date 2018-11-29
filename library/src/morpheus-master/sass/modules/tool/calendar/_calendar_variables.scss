@@ -1,10 +1,12 @@
-//////////////////////////////
-// VARIABLES: For Modules specific styles
-//////////////////////////////
+////////////////////////////////////////////
+// VARIABLES: For Modules specific styles //
+////////////////////////////////////////////
 
 $calendar-table-background-color: $background-color;
 
 $calendar-column-heading-color: #666;
+
+$miniCalendarSize: "only screen and (max-width: 550px)";
 
 // most days in the calendar
 $calendar-day-border-color: #ddd;
@@ -18,8 +20,8 @@ $calendar-day-today-text-color: #fff;
 
 // a day with event(s)
 $calendar-event-border-color: $primary-color;
-$calendar-event-background-color: #326b97;
-$calendar-event-text-color: #fff;
+$calendar-event-background-color: #eee;
+$calendar-event-text-color: #333;
 
 // today with event(s)
 $calendar-today-event-border-color: $calendar-event-border-color;

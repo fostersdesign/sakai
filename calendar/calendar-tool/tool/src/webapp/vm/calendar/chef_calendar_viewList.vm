@@ -15,10 +15,16 @@
 	#if($menu)#toolbar($menu)#end
 	#if ($alertMessage)<div class="alertMessage">$tlang.getString('gen.alert') $validator.escapeHtml($alertMessage)</div>#end
 	#set ($counter = 1 )
-	<div class="navPanel">
-		<div class="viewNav">
-			<div class="shorttext">
-				<form name="viewForm" class="inlineForm" action="#toolForm("$action")" method="post">
+	<div class="page-header">
+		<h3>$tlang.getString("view.calList")</h3>
+		<div class="sakai-sideHeading">
+			<a href="#">Printable Version</a>
+		</div>
+	</div>
+	<div class="sakai-table-toolBar">
+		<div class="sakai-table-filterContainer">
+			<form name="viewForm" class="inlineForm" action="#toolForm("$action")" method="post">
+				<div class="sakai-table-viewFilter">
 					<input type="hidden" name="eventSubmit_doView" value="view" />
 					<label for="view">$tlang.getString('view.view')</label>
 					<select name="view" size="1"  onchange="document.viewForm.submit();" id="view">
@@ -31,10 +37,10 @@
 						#end
 					</select>
 					<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
-				</form>
-			</div>	
-			<div class="shorttext">
-				<form name="listform2" class="inlineForm" method="post" action="#toolForm("$action")">
+				</div>
+			</form>
+			<form name="listform2" class="inlineForm" method="post" action="#toolForm("$action")">
+				<div class="sakai-table-viewFilter">
 					<input type="hidden" value="$tlang.getString('view.gotoday')" name="eventSubmit_doFilter" />
 					<label for="timeFilterOption">$tlang.getString('view.show')</label>
 					<select name="timeFilterOption" onchange="document.listform2.submit();" id="timeFilterOption">
@@ -47,8 +53,8 @@
 						<option value="SHOW_CUSTOM_RANGE" #if ($timeFilterOption == "SHOW_CUSTOM_RANGE") selected="selected" #end >$tlang.getString('view.custom')</option>
 					</select>
 					<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
-				</form>
-			</div>	
+				</div>
+			</form>
 			#if ($timeFilterOption == "SHOW_CUSTOM_RANGE")
 				<form name="listform1" method="post" action="#toolForm("$action")">
 					<div class="shorttext">
@@ -91,14 +97,13 @@
 
 			#end
 		</div>
-		<div class="listNav">
+		<div class="sakai-table-pagerContainer">
 			<form name="todayForm" action="#toolForm("$action")" method="post">
 				<input type="submit" name="eventSubmit_doToday" value="$tlang.getString('view.gotoday')" />
 				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 			</form>
 		</div>
 	</div>
-	<div class="clear"></div>
 	#toolbar($menu_PDF)
 	
 
@@ -380,13 +385,14 @@
 
 ## if there is at least one event shown, then the legend should be shown too
 #if ($showLegend == "true")
-	<h4>$tlang.getString('view.legend')</h4>
-	<ul class="calendarLegend">
-		#foreach ($key in $iconsAndLocalizedEventTypes.keySet())
-            <li><span class="icon $iconsAndLocalizedEventTypes.get($key)"></span> $key</li>
-		#end
-	</ul>
-	<div class="clear"></div>
+	<div class="calendarEventTypesLegend">
+		<h4>$tlang.getString('view.legend')</h4>
+		<ul class="calendarLegend">
+			#foreach ($key in $iconsAndLocalizedEventTypes.keySet())
+			<li><span class="icon $iconsAndLocalizedEventTypes.get($key)"></span> $key</li>
+			#end
+		</ul>
+	</div>
 #end
 
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
